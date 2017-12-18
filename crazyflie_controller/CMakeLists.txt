@@ -8,6 +8,10 @@ find_package(catkin REQUIRED COMPONENTS
   actionlib
   tf_conversions
   cmake_modules
+  crazyflie_driver
+  message_generation
+  genmsg
+  actionlib_msgs
 )
 
 # Enable C++14
@@ -85,9 +89,9 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
+  CATKIN_DEPENDS message_runtime
 #  INCLUDE_DIRS include
 #  LIBRARIES crazyflie_controller
-#  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
 
@@ -113,7 +117,7 @@ add_executable(crazyflie_controller
 
 # Add cmake target dependencies of the executable/library
 # as an example, message headers may need to be generated before nodes
-# add_dependencies(crazyflie_controller crazyflie_controller_generate_messages_cpp)
+add_dependencies(crazyflie_controller crazyflie_controller_generate_messages_cpp)
 
 # Specify libraries to link a library or executable target against
 target_link_libraries(crazyflie_controller
