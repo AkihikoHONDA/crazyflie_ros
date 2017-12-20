@@ -1201,6 +1201,7 @@ public:
     std::string logFilePath;
     std::string interactiveObject;
     bool printLatency;
+	bool suppressLatencyWarnings;
     bool writeCSVs;
     std::string motionCaptureType;
 
@@ -1212,6 +1213,7 @@ public:
     nl.param<std::string>("save_point_clouds", logFilePath, "");
     nl.param<std::string>("interactive_object", interactiveObject, "");
     nl.getParam("print_latency", printLatency);
+	nl.param<bool>("suppress_latency_warning", suppressLatencyWarnings, false);
     nl.getParam("write_csvs", writeCSVs);
     nl.param<std::string>("motion_capture_type", motionCaptureType, "vicon");
 
@@ -1390,7 +1392,12 @@ public:
         for (const auto& item : mocapLatency) {
           sstr << "  Latency: " << item.name() << ": " << item.value() << " s." << std::endl;
         }
-        ROS_WARN("%s", sstr.str().c_str());
+
+		if(!suppressLatencyWarnings){
+		  ROS_WARN("%s", sstr.str().c_str());
+		}else{
+		  ROS_WARN_THROTTLE(10, "%s", sstr.str().c_str());
+		}
       }
 
       if (printLatency) {
